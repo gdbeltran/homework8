@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>Bowling Tracker</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Bowling Tracker</h1>
+      <form action="/add" method="post">
+        <label for="score">Enter Score:</label>
+        <input type="number" id="score" name="score" required />
+        <button type="submit">Submit</button>
+      </form>
+      <div id="stats">
+        <h2>Recent Scores</h2>
+        <ul>
+          <% scores.forEach(score => { %>
+          <li>
+            <%= score.score %> - <%= new Date(score.date).toLocaleDateString()
+            %>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Logout button -->
+      <form action="/logout" method="post">
+        <button type="submit">Logout</button>
+      </form>
+    </div>
+  </body>
+</html>
