@@ -3,17 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/style.css" />
     <title>Login - Bowling Score Tracker</title>
   </head>
   <body>
-    <div class="container">
+    <div class="header">
       <h1>Login</h1>
+    </div>
+    <div class="container">
       <form action="/login" method="post">
         <label for="username">Username:</label>
+        &nbsp;&nbsp;&nbsp;
         <input type="text" id="username" name="username" required />
+        &nbsp;&nbsp;&nbsp;
         <label for="password">Password:</label>
+        &nbsp;&nbsp;&nbsp;
         <input type="password" id="password" name="password" required />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <button type="submit">Login</button>
       </form>
       <p>Don't have an account? <a href="/register">Register</a></p>

@@ -15,32 +15,15 @@
       </form>
     </div>
     <div class="container">
-      <div class="form-container">
-        <form action="/add" method="post">
-          <label for="game1">Game 1:</label>
-          &nbsp;&nbsp;&nbsp;
-          <input type="number" id="game1" name="game1" required />
-          &nbsp;&nbsp;&nbsp;
-          <label for="game2">Game 2:</label>
-          &nbsp;&nbsp;&nbsp;
-          <input type="number" id="game2" name="game2" required />
-          &nbsp;&nbsp;&nbsp;
-          <label for="game3">Game 3:</label>
-          &nbsp;&nbsp;&nbsp;
-          <input type="number" id="game3" name="game3" required />
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <button type="submit" onclick="total();">Submit</button>
-        </form>
+      <h2>Welcome to the Bowling Score Tracker!</h2>
+      <div class="options">
+        <button onclick="location.href='/enter'" class="enter">
+          Enter Scores
+        </button>
+        <button onclick="location.href='/series'" class="view">
+          View Scores
+        </button>
       </div>
     </div>
-    <script>
-      function total() {
-        var game1 = document.getElementById("game1").value;
-        var game2 = document.getElementById("game2").value;
-        var game3 = document.getElementById("game3").value;
-        var total = parseInt(game1) + parseInt(game2) + parseInt(game3);
-        var average = total / 3;
-      }
-    </script>
   </body>
 </html>

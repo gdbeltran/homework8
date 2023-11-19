@@ -3,28 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles.css" />
-    <title>Bowling Score Tracker</title>
+    <link rel="stylesheet" href="/style.css" />
+    <title>Game Series</title>
   </head>
   <body>
-    <div class="container">
-      <div id="stats">
-        <h2>Recent Scores</h2>
-        <ul>
-          <% series.forEach(series => { %>
-          <li>
-            <%= new Date(score.date).toLocaleDateString()%> - <%= series.game1
-            %> <%= series.game2 %> <%= series.game3 %> <%= series.total %>
-            series <%= series.average %> average
-          </li>
-          <% }) %>
-        </ul>
-      </div>
-
+    <div class="header">
+      <h1>Bowling Tracker</h1>
       <!-- Logout button -->
       <form action="/logout" method="post">
-        <button type="submit">Logout</button>
+        <button type="submit" class="logout">Logout</button>
       </form>
+    </div>
+    <div class="container">
+      <h1>Game Series</h1>
+      <button onclick="location.href='/enter'" class="enter">
+        Enter Scores
+      </button>
+
+      <ul>
+        <% games.forEach((game) => { %>
+        <li>
+          Game: <%= game.game1 %>, <%= game.game2 %>, <%= game.game3 %> Total:
+          <%= game.total %> Average: <%= game.average.toFixed(2) %>
+        </li>
+        <% }); %>
+      </ul>
+
+      <p>Total Scores: <%= totalScores %></p>
+      <p>Average Score: <%= averageScore.toFixed(2) %></p>
     </div>
   </body>
 </html>

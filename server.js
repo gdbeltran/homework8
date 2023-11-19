@@ -124,7 +124,7 @@ app.post("/add", isAuthenticated, async (req, res) => {
       throw new Error("All game scores are required.");
     }
 
-    const total = game1 + game2 + game3;
+    const total = parseInt(game1) + parseInt(game2) + parseInt(game3);
     const average = total / 3;
 
     const newGame = new BowlingGame({
@@ -137,11 +137,36 @@ app.post("/add", isAuthenticated, async (req, res) => {
     });
     await newGame.save();
 
-    res.redirect("/");
+    // Redirect to the "series.ejs" page after saving the game scores
+    res.redirect("/series");
   } catch (error) {
     console.error("Error adding game:", error.message);
     res.status(400).send("Bad Request");
   }
+});
+
+app.get("/series", isAuthenticated, async (req, res) => {
+  try {
+    // Fetch all games tied to the user
+    const games = await BowlingGame.find({ user: req.user._id }).sort({
+      date: "desc",
+    });
+
+    // Calculate totals and averages
+    const totalScores = games.reduce((sum, game) => sum + game.total, 0);
+    const averageScore = totalScores / games.length;
+
+    // Render the "series.ejs" page and pass the data to it
+    res.render("series", { games, totalScores, averageScore });
+  } catch (error) {
+    console.error("Error fetching game series data:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.get("/enter", isAuthenticated, (req, res) => {
+  // Render the "enter.ejs" page
+  res.render("enter");
 });
 
 app.get("/login", (req, res) => {
