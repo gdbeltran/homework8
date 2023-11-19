@@ -4,28 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/styles.css" />
-    <title>Bowling Tracker</title>
+    <title>Bowling Score Tracker</title>
   </head>
   <body>
     <div class="container">
       <h1>Bowling Tracker</h1>
       <form action="/add" method="post">
-        <label for="score">Enter Score:</label>
-        <input type="number" id="score" name="score" required />
-        <button type="submit">Submit</button>
+        <label for="game1">Enter Game 1 score:</label>
+        <input type="number" id="game1" name="game1" required />
+        <label for="game2">Enter Game 2 score:</label>
+        <input type="number" id="game2" name="game2" required />
+        <label for="game3">Enter Game 3 score:</label>
+        <input type="number" id="game3" name="game3" required />
+        <button type="submit" onclick="total();">Submit</button>
       </form>
-      <div id="stats">
-        <h2>Recent Scores</h2>
-        <ul>
-          <% scores.forEach(score => { %>
-          <li>
-            <%= score.score %> - <%= new Date(score.date).toLocaleDateString()
-            %>
-          </li>
-          <% }) %>
-        </ul>
-      </div>
-
+      <script>
+        function total() {
+          var game1 = document.getElementById("game1").value;
+          var game2 = document.getElementById("game2").value;
+          var game3 = document.getElementById("game3").value;
+          var total = parseInt(game1) + parseInt(game2) + parseInt(game3);
+          alert("Your series total is " + total);
+        }
+      </script>
       <!-- Logout button -->
       <form action="/logout" method="post">
         <button type="submit">Logout</button>

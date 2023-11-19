@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>Bowling Score Tracker</title>
+  </head>
+  <body>
+    <div class="container">
+      <div id="stats">
+        <h2>Recent Scores</h2>
+        <ul>
+          <% series.forEach(series => { %>
+          <li>
+            <%= new Date(score.date).toLocaleDateString()%> - <%= series.game1
+            %> <%= series.game2 %> <%= series.game3 %> <%= series.total %>
+            series <%= series.average %> average
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Logout button -->
+      <form action="/logout" method="post">
+        <button type="submit">Logout</button>
+      </form>
+    </div>
+  </body>
+</html>
