@@ -20,9 +20,13 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 db.once("open", () => console.log("Connected to MongoDB"));
 
-const bowlingScoreSchema = new mongoose.Schema({
+const bowlingGameSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
-  score: { type: Number, required: true },
+  game1: { type: Number, required: true },
+  game2: { type: Number, required: true },
+  game3: { type: Number, required: true },
+  total: { type: Number, required: true },
+  average: { type: Number, required: true },
   date: { type: Date, default: Date.now },
 });
 
@@ -38,7 +42,7 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   return candidatePassword === this.password;
 };
 
-const BowlingScore = mongoose.model("BowlingScore", bowlingScoreSchema);
+const BowlingGame = mongoose.model("BowlingGame", bowlingGameSchema);
 const User = mongoose.model("User", userSchema);
 
 passport.use(
@@ -102,30 +106,40 @@ app.set("view engine", "ejs");
 
 app.get("/", isAuthenticated, async (req, res) => {
   try {
-    const scores = await BowlingScore.find({ user: req.user._id }).sort({
+    const games = await BowlingGame.find({ user: req.user._id }).sort({
       date: "desc",
     });
-    res.render("index", { scores });
+    res.render("index", { games });
   } catch (error) {
-    console.error("Error fetching scores:", error.message);
+    console.error("Error fetching games:", error.message);
     res.status(500).send("Internal Server Error");
   }
 });
 
 app.post("/add", isAuthenticated, async (req, res) => {
-  const { score } = req.body;
+  const { game1, game2, game3 } = req.body;
 
   try {
-    if (!score) {
-      throw new Error("Score is required.");
+    if (!game1 || !game2 || !game3) {
+      throw new Error("All game scores are required.");
     }
 
-    const newScore = new BowlingScore({ user: req.user._id, score });
-    await newScore.save();
+    const total = game1 + game2 + game3;
+    const average = total / 3;
+
+    const newGame = new BowlingGame({
+      user: req.user._id,
+      game1,
+      game2,
+      game3,
+      total,
+      average,
+    });
+    await newGame.save();
 
     res.redirect("/");
   } catch (error) {
-    console.error("Error adding score:", error.message);
+    console.error("Error adding game:", error.message);
     res.status(400).send("Bad Request");
   }
 });
