@@ -27,7 +27,7 @@ const bowlingGameSchema = new mongoose.Schema({
   game3: { type: Number, required: true },
   total: { type: Number, required: true },
   average: { type: Number, required: true },
-  date: { type: Date, default: Date.now },
+  date: { type: Date, default: Date.now() },
 });
 
 const userSchema = new mongoose.Schema(

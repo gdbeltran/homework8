@@ -37,22 +37,4 @@ document.addEventListener("DOMContentLoaded", () => {
       throw new Error(data.message);
     }
   }
-
-  async function updateStats() {
-    try {
-      const response = await fetch("/api/stats");
-      const data = await response.json();
-
-      statsContainer.innerHTML = `
-          <h2>Statistics</h2>
-          <p>Game 1: ${data.game1}</p>
-          <p>Game 2: ${data.game2}</p>
-          <p>Game 3: ${data.game3}</p>
-          <p>Total Score: ${data.total.toFixed(2)}</p>
-          <p>Average Score: ${data.average.toFixed(2)}</p>
-        `;
-    } catch (error) {
-      console.error("Error fetching statistics:", error.message);
-    }
-  }
 });
