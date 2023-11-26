@@ -5,6 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
     <title>Register - Bowling Score Tracker</title>
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .additional-leagues {
+        margin-top: 10px;
+      }
+
+      /* Complementary color for the "Add League" button */
+      .add-league-button {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      /* Red color for remove buttons */
+      .remove-button {
+        background-color: #ff0000;
+        color: white;
+      }
+    </style>
   </head>
   <body>
     <div class="header">
@@ -12,13 +35,95 @@
     </div>
     <div class="container">
       <form action="/register" method="post">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required />
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required />
+
+        <label for="league_name">League Name:</label>
+        <input type="text" id="league_name" name="league_name" required />
+
+        <label for="league_day">League Day:</label>
+        <input type="text" id="league_day" name="league_day" required />
+
+        <button type="button" class="add-league-button" onclick="addLeague()">
+          Add League
+        </button>
+
+        <div class="additional-leagues" id="additionalLeaguesContainer"></div>
+
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required />
+
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required />
+
+        <label for="confirm_password">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirm_password"
+          name="confirm_password"
+          required
+        />
+
         <button type="submit">Register</button>
       </form>
-      <p>Already have an account? <a href="/login">Login</a></p>
     </div>
+
+    <script>
+      function addLeague() {
+        const container = document.getElementById("additionalLeaguesContainer");
+        const index = container.children.length + 1;
+
+        if (index <= 4) {
+          const leagueContainer = document.createElement("div");
+
+          const leagueNameLabel = document.createElement("label");
+          leagueNameLabel.for = `league_name_${index}`;
+          leagueNameLabel.innerText = `League Name:`;
+
+          const leagueName = document.createElement("input");
+          leagueName.type = "text";
+          leagueName.name = `league_name_${index}`;
+          leagueName.required = true;
+
+          const leagueDayLabel = document.createElement("label");
+          leagueDayLabel.for = `league_day_${index}`;
+          leagueDayLabel.innerText = `League Day:`;
+
+          const leagueDay = document.createElement("input");
+          leagueDay.type = "text";
+          leagueDay.name = `league_day_${index}`;
+          leagueDay.required = true;
+
+          const removeButton = document.createElement("button");
+          removeButton.type = "button";
+          removeButton.innerText = "Remove";
+          removeButton.className = "remove-button";
+          removeButton.onclick = function () {
+            container.removeChild(leagueContainer);
+            checkAddLeagueButtonStatus();
+          };
+
+          leagueContainer.appendChild(leagueNameLabel);
+          leagueContainer.appendChild(leagueName);
+          leagueContainer.appendChild(document.createElement("br"));
+          leagueContainer.appendChild(leagueDayLabel);
+          leagueContainer.appendChild(leagueDay);
+          leagueContainer.appendChild(document.createElement("br"));
+          leagueContainer.appendChild(removeButton);
+
+          container.appendChild(leagueContainer);
+
+          checkAddLeagueButtonStatus();
+        }
+      }
+
+      function checkAddLeagueButtonStatus() {
+        const container = document.getElementById("additionalLeaguesContainer");
+        const index = container.children.length;
+      }
+    </script>
   </body>
 </html>

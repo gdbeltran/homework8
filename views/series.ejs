@@ -25,9 +25,10 @@
         <li>
           <% const formattedDate = new
           Date(game.date).toLocaleDateString('en-US', { weekday: 'long', month:
-          'long', day: 'numeric', }); %> <%= formattedDate %> - Series: <%=
-          game.game1 %>, <%= game.game2 %>, <%= game.game3 %> Total: <%=
-          game.total %> Average: <%= game.average.toFixed(2) %>
+          'long', day: 'numeric', }); %> <%= formattedDate %> - Games: <%=
+          game.game1 %>, <%= game.game2 %>, <%= game.game3 %> &nbsp;&nbsp;&nbsp;
+          Series: <%= game.total %> &nbsp;&nbsp;&nbsp; Average: <%=
+          game.average.toFixed(2) %>
         </li>
         <% }); %>
       </ul>

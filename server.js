@@ -20,7 +20,7 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 db.once("open", () => console.log("Connected to MongoDB"));
 
-const bowlingGameSchema = new mongoose.Schema({
+const bowlingSeriesSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
   game1: { type: Number, required: true },
   game2: { type: Number, required: true },
@@ -32,8 +32,16 @@ const bowlingGameSchema = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema(
   {
+    first_name: { type: String, required: true },
+    last_name: { type: String, required: true },
     username: { type: String, unique: true, required: true },
     password: { type: String, required: true },
+    leagues: [
+      {
+        name: { type: String, required: true },
+        day: { type: String, required: true },
+      },
+    ],
   },
   { collection: "Users" }
 );
@@ -42,7 +50,7 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   return candidatePassword === this.password;
 };
 
-const BowlingGame = mongoose.model("BowlingGame", bowlingGameSchema);
+const BowlingSeries = mongoose.model("Series", bowlingSeriesSchema);
 const User = mongoose.model("User", userSchema);
 
 passport.use(
@@ -106,7 +114,7 @@ app.set("view engine", "ejs");
 
 app.get("/", isAuthenticated, async (req, res) => {
   try {
-    const games = await BowlingGame.find({ user: req.user._id }).sort({
+    const games = await BowlingSeries.find({ user: req.user._id }).sort({
       date: "desc",
     });
     res.render("index", { games });
@@ -127,7 +135,7 @@ app.post("/add", isAuthenticated, async (req, res) => {
     const total = parseInt(game1) + parseInt(game2) + parseInt(game3);
     const average = total / 3;
 
-    const newGame = new BowlingGame({
+    const newGame = new BowlingSeries({
       user: req.user._id,
       game1,
       game2,
@@ -148,7 +156,7 @@ app.post("/add", isAuthenticated, async (req, res) => {
 app.get("/series", isAuthenticated, async (req, res) => {
   try {
     // Fetch all games tied to the user
-    const games = await BowlingGame.find({ user: req.user._id }).sort({
+    const games = await BowlingSeries.find({ user: req.user._id }).sort({
       date: "desc",
     });
 
