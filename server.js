@@ -203,12 +203,14 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
+const User = require("<your_user_model_path>"); // Update with the actual path to your User model
+
 app.post("/register", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, first_name, last_name, leagues } = req.body;
 
   try {
-    if (!username || !password) {
-      throw new Error("Username and password are required.");
+    if (!username || !password || !first_name || !last_name || !leagues) {
+      throw new Error("All fields are required.");
     }
 
     const existingUser = await User.findOne({ username });
@@ -216,7 +218,14 @@ app.post("/register", async (req, res) => {
       throw new Error("Username already exists.");
     }
 
-    const newUser = new User({ username, password });
+    const newUser = new User({
+      username,
+      password,
+      first_name,
+      last_name,
+      leagues,
+    });
+
     await newUser.save();
 
     res.redirect("/login");

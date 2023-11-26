@@ -6,28 +6,51 @@
     <link rel="stylesheet" href="/style.css" />
     <title>Register - Bowling Score Tracker</title>
     <style>
+    
       .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        display: block;
+        width: 50%;
+        margin: 0 auto; /* Center the container */
+        justify-content: space-between;
       }
 
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      form {
+        padding-top: 10px;
+      }
+    
+      input,
+      password,
+      button {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 8px;
+      }
+    
       .additional-leagues {
-        margin-top: 10px;
+        display: block;
+        width: 40%;
+        margin-top: 0 auto;
+        justify-content: space-between;
       }
-
+    
       /* Complementary color for the "Add League" button */
       .add-league-button {
         background-color: #4caf50;
         color: white;
       }
-
+    
       /* Red color for remove buttons */
       .remove-button {
         background-color: #ff0000;
         color: white;
       }
     </style>
+    
   </head>
   <body>
     <div class="header">
@@ -35,25 +58,8 @@
     </div>
     <div class="container">
       <form action="/register" method="post">
-        <label for="first_name">First Name:</label>
-        <input type="text" id="first_name" name="first_name" required />
-
-        <label for="last_name">Last Name:</label>
-        <input type="text" id="last_name" name="last_name" required />
-
-        <label for="league_name">League Name:</label>
-        <input type="text" id="league_name" name="league_name" required />
-
-        <label for="league_day">League Day:</label>
-        <input type="text" id="league_day" name="league_day" required />
-
-        <button type="button" class="add-league-button" onclick="addLeague()">
-          Add League
-        </button>
-
-        <div class="additional-leagues" id="additionalLeaguesContainer"></div>
-
-        <label for="username">Username:</label>
+        <p>
+          <label for="username">Username:</label>
         <input type="text" id="username" name="username" required />
 
         <label for="password">Password:</label>
@@ -67,7 +73,27 @@
           required
         />
 
+        <br><br><br>
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required />
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required />
+
+        <label for="league_name">League Name:</label>
+        <input type="text" id="league_name" name="league_name" required />
+
+        <label for="league_day">League Day:</label>
+        <input type="text" id="league_day" name="league_day" required />
+
         <button type="submit">Register</button>
+        <button type="button" class="add-league-button" onclick="addLeague()">
+          Add League
+        </button>
+
+        <div class="additional-leagues" id="additionalLeaguesContainer"></div>
+      </p>
       </form>
     </div>
 
@@ -76,7 +102,7 @@
         const container = document.getElementById("additionalLeaguesContainer");
         const index = container.children.length + 1;
 
-        if (index <= 4) {
+        if (index <= 3) {
           const leagueContainer = document.createElement("div");
 
           const leagueNameLabel = document.createElement("label");
