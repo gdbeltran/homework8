@@ -174,7 +174,7 @@ app.get("/series", isAuthenticated, async (req, res) => {
 
 app.get("/enter", isAuthenticated, (req, res) => {
   // Render the "enter.ejs" page
-  res.render("enter");
+  res.render("enter", { user: req.user });
 });
 
 app.get("/login", (req, res) => {
@@ -203,14 +203,32 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
-const User = require("<your_user_model_path>"); // Update with the actual path to your User model
-
 app.post("/register", async (req, res) => {
-  const { username, password, first_name, last_name, leagues } = req.body;
+  const {
+    username,
+    password,
+    confirm_password,
+    first_name,
+    last_name,
+    league_names,
+    league_days,
+  } = req.body;
 
   try {
-    if (!username || !password || !first_name || !last_name || !leagues) {
+    if (
+      !username ||
+      !password ||
+      !confirm_password ||
+      !first_name ||
+      !last_name ||
+      !league_names ||
+      !league_days
+    ) {
       throw new Error("All fields are required.");
+    }
+
+    if (password !== confirm_password) {
+      throw new Error("Passwords do not match.");
     }
 
     const existingUser = await User.findOne({ username });
@@ -218,12 +236,21 @@ app.post("/register", async (req, res) => {
       throw new Error("Username already exists.");
     }
 
+    // Use a different variable name for the array inside the loop
+    const leaguesArray = [];
+    for (let i = 0; i < league_names.length; i++) {
+      leaguesArray.push({
+        name: league_names[i],
+        day: league_days[i],
+      });
+    }
+
     const newUser = new User({
       username,
       password,
       first_name,
       last_name,
-      leagues,
+      leagues: leaguesArray, // Use the correct variable name here
     });
 
     await newUser.save();
@@ -231,7 +258,7 @@ app.post("/register", async (req, res) => {
     res.redirect("/login");
   } catch (error) {
     console.error("Error registering user:", error.message);
-    res.status(400).send("Bad Request");
+    res.status(400).send(error.message);
   }
 });
 

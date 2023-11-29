@@ -19,11 +19,12 @@
         <form action="/add" method="post">
           <label for="league_name">Select League:</label>
           <select id="league_name" name="league_name" required>
-            <!-- Populate options dynamically based on registered leagues -->
-            <!-- Replace the following options with dynamic values -->
-            <option value="league1">League 1</option>
-            <option value="league2">League 2</option>
-            <!-- Add more options as needed -->
+            <!-- Populate options dynamically based on user's registered leagues -->
+            <% for (let i = 0; i < user.leagues.length; i++) { %>
+            <option value="<%= user.leagues[i].name %>">
+              <%= user.leagues[i].name %>
+            </option>
+            <% } %>
           </select>
           <br />
 

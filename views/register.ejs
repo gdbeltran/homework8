@@ -40,7 +40,7 @@
     
       /* Complementary color for the "Add League" button */
       .add-league-button {
-        background-color: #4caf50;
+        background-color: #0000ff;
         color: white;
       }
     
@@ -81,11 +81,11 @@
         <label for="last_name">Last Name:</label>
         <input type="text" id="last_name" name="last_name" required />
 
-        <label for="league_name">League Name:</label>
-        <input type="text" id="league_name" name="league_name" required />
+        <label for="league_names">League Name:</label>
+        <input type="text" id="league_names" name="league_names[0]" required />
 
-        <label for="league_day">League Day:</label>
-        <input type="text" id="league_day" name="league_day" required />
+        <label for="league_days">League Day:</label>
+        <input type="text" id="league_days" name="league_days[0]" required />
 
         <button type="submit">Register</button>
         <button type="button" class="add-league-button" onclick="addLeague()">
@@ -102,7 +102,7 @@
         const container = document.getElementById("additionalLeaguesContainer");
         const index = container.children.length + 1;
 
-        if (index <= 3) {
+        if (index <= 4) {
           const leagueContainer = document.createElement("div");
 
           const leagueNameLabel = document.createElement("label");
@@ -111,7 +111,7 @@
 
           const leagueName = document.createElement("input");
           leagueName.type = "text";
-          leagueName.name = `league_name_${index}`;
+          leagueName.name = `league_names[${index}]`;
           leagueName.required = true;
 
           const leagueDayLabel = document.createElement("label");
@@ -120,7 +120,7 @@
 
           const leagueDay = document.createElement("input");
           leagueDay.type = "text";
-          leagueDay.name = `league_day_${index}`;
+          leagueDay.name = `league_days[${index}]`;
           leagueDay.required = true;
 
           const removeButton = document.createElement("button");
