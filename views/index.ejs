@@ -7,13 +7,7 @@
     <title>Bowling Score Tracker</title>
   </head>
   <body>
-    <div class="header">
-      <h1>Bowling Tracker</h1>
-      <!-- Logout button -->
-      <form action="/logout" method="post">
-        <button type="submit" class="logout">Logout</button>
-      </form>
-    </div>
+    <%- include('partials/header', { title: 'Home', page: 'index' }) %>
     <div class="container">
       <h2>Welcome to the Bowling Score Tracker!</h2>
       <div class="options">

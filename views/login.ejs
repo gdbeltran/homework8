@@ -7,22 +7,25 @@
     <title>Login - Bowling Score Tracker</title>
   </head>
   <body>
-    <div class="header">
-      <h1>Login</h1>
-    </div>
-    <div class="container">
-      <form action="/login" method="post">
-        <label for="username">Username:</label>
-        &nbsp;&nbsp;&nbsp;
-        <input type="text" id="username" name="username" required />
-        &nbsp;&nbsp;&nbsp;
-        <label for="password">Password:</label>
-        &nbsp;&nbsp;&nbsp;
-        <input type="password" id="password" name="password" required />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button type="submit">Login</button>
-      </form>
-      <p>Don't have an account? <a href="/register">Register</a></p>
-    </div>
+    <%- include('partials/header', { title: 'Login', page: 'login' }) %>
+    <form action="/login" method="post">
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="Username"
+        required
+      />
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Password"
+        required
+      />
+      <button type="submit">Login</button>
+    </form>
   </body>
 </html>

@@ -5,97 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
     <title>Register - Bowling Score Tracker</title>
-    <style>
-    
-      .container {
-        display: block;
-        width: 50%;
-        margin: 0 auto; /* Center the container */
-        justify-content: space-between;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 5px;
-      }
-
-      form {
-        padding-top: 10px;
-      }
-    
-      input,
-      password,
-      button {
-        width: 100%;
-        margin-bottom: 10px;
-        padding: 8px;
-      }
-    
-      .additional-leagues {
-        display: block;
-        width: 40%;
-        margin-top: 0 auto;
-        justify-content: space-between;
-      }
-    
-      /* Complementary color for the "Add League" button */
-      .add-league-button {
-        background-color: #0000ff;
-        color: white;
-      }
-    
-      /* Red color for remove buttons */
-      .remove-button {
-        background-color: #ff0000;
-        color: white;
-      }
-    </style>
-    
   </head>
   <body>
-    <div class="header">
-      <h1>Register</h1>
-    </div>
-    <div class="container">
-      <form action="/register" method="post">
-        <p>
-          <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required />
+    <%- include('partials/header', { title: 'Register', page: 'register' }) %>
+    <form action="/register" method="post">
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="Username"
+        required
+      />
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required />
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Password"
+        required
+      />
 
-        <label for="confirm_password">Confirm Password:</label>
-        <input
-          type="password"
-          id="confirm_password"
-          name="confirm_password"
-          required
-        />
+      <label for="confirm_password">Confirm Password:</label>
+      <input
+        type="password"
+        id="confirm_password"
+        name="confirm_password"
+        placeholder="Confirm Password"
+        required
+      />
 
-        <br><br><br>
+      <label for="first_name">First Name:</label>
+      <input
+        type="text"
+        id="first_name"
+        name="first_name"
+        placeholder="First Name"
+        required
+      />
 
-        <label for="first_name">First Name:</label>
-        <input type="text" id="first_name" name="first_name" required />
+      <label for="last_name">Last Name:</label>
+      <input
+        type="text"
+        id="last_name"
+        name="last_name"
+        placeholder="Last Name"
+        required
+      />
 
-        <label for="last_name">Last Name:</label>
-        <input type="text" id="last_name" name="last_name" required />
+      <label for="league_names">League Names:</label>
+      <input
+        type="text"
+        id="league_names"
+        name="league_names"
+        placeholder="League Names (comma-separated)"
+        required
+      />
 
-        <label for="league_names">League Name:</label>
-        <input type="text" id="league_names" name="league_names[0]" required />
-
-        <label for="league_days">League Day:</label>
-        <input type="text" id="league_days" name="league_days[0]" required />
-
-        <button type="submit">Register</button>
-        <button type="button" class="add-league-button" onclick="addLeague()">
-          Add League
-        </button>
-
-        <div class="additional-leagues" id="additionalLeaguesContainer"></div>
-      </p>
-      </form>
-    </div>
+      <button type="submit">Register</button>
+    </form>
 
     <script>
       function addLeague() {
@@ -114,15 +83,6 @@
           leagueName.name = `league_names[${index}]`;
           leagueName.required = true;
 
-          const leagueDayLabel = document.createElement("label");
-          leagueDayLabel.for = `league_day_${index}`;
-          leagueDayLabel.innerText = `League Day:`;
-
-          const leagueDay = document.createElement("input");
-          leagueDay.type = "text";
-          leagueDay.name = `league_days[${index}]`;
-          leagueDay.required = true;
-
           const removeButton = document.createElement("button");
           removeButton.type = "button";
           removeButton.innerText = "Remove";
@@ -134,9 +94,6 @@
 
           leagueContainer.appendChild(leagueNameLabel);
           leagueContainer.appendChild(leagueName);
-          leagueContainer.appendChild(document.createElement("br"));
-          leagueContainer.appendChild(leagueDayLabel);
-          leagueContainer.appendChild(leagueDay);
           leagueContainer.appendChild(document.createElement("br"));
           leagueContainer.appendChild(removeButton);
 

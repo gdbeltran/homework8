@@ -124,6 +124,25 @@ app.get("/", isAuthenticated, async (req, res) => {
   }
 });
 
+app.get("/settings", isAuthenticated, (req, res) => {
+  res.render("settings", { user: req.user });
+});
+
+app.post("/settings", isAuthenticated, async (req, res) => {
+  const { first_name, last_name, league_names } = req.body;
+
+  // Validate the input...
+
+  req.user.first_name = first_name;
+  req.user.last_name = last_name;
+  req.user.leagues = Array.isArray(league_names)
+    ? league_names
+    : [league_names];
+  await req.user.save();
+
+  res.redirect("/settings");
+});
+
 app.post("/add", isAuthenticated, async (req, res) => {
   const { game1, game2, game3 } = req.body;
 
@@ -134,6 +153,8 @@ app.post("/add", isAuthenticated, async (req, res) => {
 
     const total = parseInt(game1) + parseInt(game2) + parseInt(game3);
     const average = total / 3;
+
+    const formattedDate = new Date(date);
 
     const newGame = new BowlingSeries({
       user: req.user._id,
@@ -211,7 +232,6 @@ app.post("/register", async (req, res) => {
     first_name,
     last_name,
     league_names,
-    league_days,
   } = req.body;
 
   try {
@@ -221,8 +241,7 @@ app.post("/register", async (req, res) => {
       !confirm_password ||
       !first_name ||
       !last_name ||
-      !league_names ||
-      !league_days
+      league_names.length === 0
     ) {
       throw new Error("All fields are required.");
     }
@@ -236,24 +255,14 @@ app.post("/register", async (req, res) => {
       throw new Error("Username already exists.");
     }
 
-    // Use a different variable name for the array inside the loop
-    const leaguesArray = [];
-    for (let i = 0; i < league_names.length; i++) {
-      leaguesArray.push({
-        name: league_names[i],
-        day: league_days[i],
-      });
-    }
-
-    const newUser = new User({
+    const user = new User({
       username,
       password,
       first_name,
       last_name,
-      leagues: leaguesArray, // Use the correct variable name here
+      leagues: league_names.split(","),
     });
-
-    await newUser.save();
+    await user.save();
 
     res.redirect("/login");
   } catch (error) {

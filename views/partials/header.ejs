@@ -1,0 +1,23 @@
+<header>
+  <h1><%= title %></h1>
+  <nav>
+    <% if (page === 'register') { %>
+    <a href="/login" class="button">Login</a>
+    <% } else if (page === 'index') { %>
+    <a href="/settings" class="button">Settings</a>
+    <a href="/logout" class="button">Logout</a>
+    <% } else if (page === 'enter') { %>
+    <a href="/series" class="button">View Scores</a>
+    <a href="/logout" class="button">Logout</a>
+    <% } else if (page === 'series') { %>
+    <a href="/enter" class="button">Enter Scores</a>
+    <a href="/logout" class="button">Logout</a>
+    <% } else if (page === 'settings') { %>
+    <a href="/enter" class="button">Enter Scores</a>
+    <a href="/series" class="button">View Scores</a>
+    <a href="/logout" class="button">Logout</a>
+    <% } else if (page === 'login') { %>
+    <a href="/register" class="button">Register</a>
+    <% }
+  </nav>
+</header>

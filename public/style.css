@@ -4,6 +4,12 @@ body {
   background-color: #f4f4f4;
 }
 
+.buttons-container button {
+  /* Set the size of the buttons */
+  width: 100px;
+  height: 50px;
+}
+
 .header {
   background-color: #333;
   padding: 10px;
@@ -24,15 +30,16 @@ body {
 .form-container {
   width: 60%;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 form {
   margin-top: 20px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  vertical-align: middle;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 label {
@@ -47,40 +54,61 @@ input {
   box-sizing: border-box;
 }
 
-.enter button {
+.enter button,
+.series button,
+button {
   background-color: #4caf50;
   color: white;
   padding: 10px 15px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.enter button {
   margin-left: 10px;
+}
+
+button.logout {
+  background-color: #d9534f;
+}
+
+button[type="submit"] {
+  align-self: flex-end;
 }
 
 .series {
   margin-top: 20px;
 }
 
-.series button {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+.buttons-container {
+  display: flex;
 }
 
-button {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 15px;
-  margin-bottom: 15px;
-  border: none;
-  text-transform: uppercase;
-  border-radius: 10px;
-  cursor: pointer;
+.container {
+  display: block;
+  width: 50%;
+  margin: 0 auto; /* Center the container */
+  justify-content: space-between;
 }
 
-button.logout {
-  background-color: #d9534f;
+form {
+  padding-top: 10px;
+}
+
+.additional-leagues {
+  display: block;
+  width: 40%;
+  margin-top: 0 auto;
+  justify-content: space-between;
+}
+
+.add-league-button {
+  background-color: #0000ff;
+  color: white;
+}
+
+.remove-button {
+  background-color: #ff0000;
+  color: white;
 }

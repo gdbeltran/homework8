@@ -7,48 +7,38 @@
     <title>Bowling Score Tracker</title>
   </head>
   <body>
-    <div class="header">
-      <h1>Enter Scores</h1>
-      <!-- Logout button -->
-      <form action="/logout" method="post">
-        <button type="submit" class="logout">Logout</button>
-      </form>
-    </div>
+    <%- include('partials/header', { title: 'Enter Scores', page: 'enter' }) %>
     <div class="container">
       <div class="form-container">
         <form action="/add" method="post">
-          <label for="league_name">Select League:</label>
-          <select id="league_name" name="league_name" required>
-            <!-- Populate options dynamically based on user's registered leagues -->
-            <% for (let i = 0; i < user.leagues.length; i++) { %>
-            <option value="<%= user.leagues[i].name %>">
-              <%= user.leagues[i].name %>
-            </option>
-            <% } %>
-          </select>
-          <br />
+          <p>
+            <label for="league_name">Select League:</label>
+            <select id="league_name" name="league_name" required>
+              <!-- Populate options dynamically based on user's registered leagues -->
+              <% for (let i = 0; i < user.leagues.length; i++) { %>
+              <option value="<%= user.leagues[i].name %>">
+                <%= user.leagues[i].name %>
+              </option>
+              <% } %>
+            </select>
+            <br />
 
-          <label for="date">Date:</label>
-          <input type="date" id="date" name="date" required />
-          <br />
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required />
+            <br />
 
-          <label for="game1">Game 1:</label>
-          <input type="number" id="game1" name="game1" required />
+            <label for="game1">Game 1:</label>
+            <input type="number" id="game1" name="game1" required />
 
-          <label for="game2">Game 2:</label>
-          <input type="number" id="game2" name="game2" required />
+            <label for="game2">Game 2:</label>
+            <input type="number" id="game2" name="game2" required />
 
-          <label for="game3">Game 3:</label>
-          <input type="number" id="game3" name="game3" required />
+            <label for="game3">Game 3:</label>
+            <input type="number" id="game3" name="game3" required />
 
-          <button type="submit" onclick="total();">Submit</button>
+            <button type="submit" onclick="total();">Submit</button>
+          </p>
         </form>
-
-        <div class="series">
-          <button onclick="location.href='/series'" class="view">
-            View Scores
-          </button>
-        </div>
       </div>
     </div>
   </body>

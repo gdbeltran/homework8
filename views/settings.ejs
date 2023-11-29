@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
+    <title>Bowling Score Tracker</title>
+  </head>
+  <body>
+    <%- include('partials/header', { title: 'Settings', page: 'settings' }) %>
+    <form action="/settings" method="post">
+      <label for="first_name">First Name:</label>
+      <input
+        type="text"
+        id="first_name"
+        name="first_name"
+        value="<%= user.first_name %>"
+        required
+      />
+
+      <label for="last_name">Last Name:</label>
+      <input
+        type="text"
+        id="last_name"
+        name="last_name"
+        value="<%= user.last_name %>"
+        required
+      />
+
+      <% user.leagues.forEach((league, index) => { %>
+      <label for="league_<%= index %>">League Name:</label>
+      <input
+        type="text"
+        id="league_<%= index %>"
+        name="league_names"
+        value="<%= league %>"
+        required
+      />
+      <% }) %>
+
+      <button type="submit">Save Changes</button>
+    </form>
+  </body>
+</html>
