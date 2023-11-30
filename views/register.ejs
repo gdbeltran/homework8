@@ -9,7 +9,7 @@
   <body>
     <%- include('partials/header', { title: 'Register', page: 'register' }) %>
     <form action="/register" method="post">
-      <label for="username">Username:</label>
+      <label for="username">Username: *</label>
       <input
         type="text"
         id="username"
@@ -18,7 +18,7 @@
         required
       />
 
-      <label for="password">Password:</label>
+      <label for="password">Password: *</label>
       <input
         type="password"
         id="password"
@@ -27,7 +27,7 @@
         required
       />
 
-      <label for="confirm_password">Confirm Password:</label>
+      <label for="confirm_password">Confirm Password: *</label>
       <input
         type="password"
         id="confirm_password"
@@ -36,7 +36,7 @@
         required
       />
 
-      <label for="first_name">First Name:</label>
+      <label for="first_name">First Name: *</label>
       <input
         type="text"
         id="first_name"
@@ -45,7 +45,7 @@
         required
       />
 
-      <label for="last_name">Last Name:</label>
+      <label for="last_name">Last Name: *</label>
       <input
         type="text"
         id="last_name"
@@ -54,59 +54,48 @@
         required
       />
 
-      <label for="league_names">League Names:</label>
+      <label for="league_name1">League 1 Name: *</label>
       <input
         type="text"
-        id="league_names"
-        name="league_names"
-        placeholder="League Names (comma-separated)"
+        id="league_name1"
+        name="league_name1"
+        placeholder="Required"
         required
+      />
+
+      <label for="league_name2">League 2 Name:</label>
+      <input
+        type="text"
+        id="league_name2"
+        name="league_name2"
+        placeholder="Optional"
+      />
+
+      <label for="league_name3">League 3 Name:</label>
+      <input
+        type="text"
+        id="league_name3"
+        name="league_name3"
+        placeholder="Optional"
+      />
+
+      <label for="league_name4">League 4 Name:</label>
+      <input
+        type="text"
+        id="league_name4"
+        name="league_name4"
+        placeholder="Optional"
+      />
+
+      <label for="league_name5">League 5 Name:</label>
+      <input
+        type="text"
+        id="league_name5"
+        name="league_name5"
+        placeholder="Optional"
       />
 
       <button type="submit">Register</button>
     </form>
-
-    <script>
-      function addLeague() {
-        const container = document.getElementById("additionalLeaguesContainer");
-        const index = container.children.length + 1;
-
-        if (index <= 4) {
-          const leagueContainer = document.createElement("div");
-
-          const leagueNameLabel = document.createElement("label");
-          leagueNameLabel.for = `league_name_${index}`;
-          leagueNameLabel.innerText = `League Name:`;
-
-          const leagueName = document.createElement("input");
-          leagueName.type = "text";
-          leagueName.name = `league_names[${index}]`;
-          leagueName.required = true;
-
-          const removeButton = document.createElement("button");
-          removeButton.type = "button";
-          removeButton.innerText = "Remove";
-          removeButton.className = "remove-button";
-          removeButton.onclick = function () {
-            container.removeChild(leagueContainer);
-            checkAddLeagueButtonStatus();
-          };
-
-          leagueContainer.appendChild(leagueNameLabel);
-          leagueContainer.appendChild(leagueName);
-          leagueContainer.appendChild(document.createElement("br"));
-          leagueContainer.appendChild(removeButton);
-
-          container.appendChild(leagueContainer);
-
-          checkAddLeagueButtonStatus();
-        }
-      }
-
-      function checkAddLeagueButtonStatus() {
-        const container = document.getElementById("additionalLeaguesContainer");
-        const index = container.children.length;
-      }
-    </script>
   </body>
 </html>

@@ -32,16 +32,11 @@ const bowlingSeriesSchema = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema(
   {
-    first_name: { type: String, required: true },
-    last_name: { type: String, required: true },
-    username: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
-    leagues: [
-      {
-        name: { type: String, required: true },
-        day: { type: String, required: true },
-      },
-    ],
+    username: String,
+    password: String,
+    first_name: String,
+    last_name: String,
+    leagues: [String],
   },
   { collection: "Users" }
 );
@@ -231,7 +226,11 @@ app.post("/register", async (req, res) => {
     confirm_password,
     first_name,
     last_name,
-    league_names,
+    league_name1,
+    league_name2,
+    league_name3,
+    league_name4,
+    league_name5,
   } = req.body;
 
   try {
@@ -241,7 +240,7 @@ app.post("/register", async (req, res) => {
       !confirm_password ||
       !first_name ||
       !last_name ||
-      league_names.length === 0
+      !league_name1
     ) {
       throw new Error("All fields are required.");
     }
@@ -255,12 +254,18 @@ app.post("/register", async (req, res) => {
       throw new Error("Username already exists.");
     }
 
+    const leagues = [league_name1];
+    if (league_name2) leagues.push(league_name2);
+    if (league_name3) leagues.push(league_name3);
+    if (league_name4) leagues.push(league_name4);
+    if (league_name5) leagues.push(league_name5);
+
     const user = new User({
       username,
       password,
       first_name,
       last_name,
-      leagues: league_names.split(","),
+      leagues,
     });
     await user.save();
 

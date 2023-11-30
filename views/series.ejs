@@ -7,21 +7,31 @@
     <title>Game Series</title>
   </head>
   <body>
-    <%- include('partials/header', { title: 'Series', page: 'series' }) %>
-    <div class="container">
-      <h1>Game Series</h1>
-      <ul>
-        <% games.forEach((game) => { %>
-        <li>
-          <% const formattedDate = new
-          Date(game.date).toLocaleDateString('en-US', { month: 'long', day:
-          'numeric' }); %> <%= formattedDate %> - Games: <%= game.game1 %>, <%=
-          game.game2 %>, <%= game.game3 %> Series: <%= game.total %> Average:
-          <%= Math.floor(game.average) %>
-        </li>
-        <% }); %>
-      </ul>
-      <p>Total Scores: <%= totalScores %></p>
-    </div>
+    <%- include('partials/header', { title: 'View Scores', page: 'series' }) %>
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>League</th>
+        <th>Game 1</th>
+        <th>Game 2</th>
+        <th>Game 3</th>
+        <th>Total</th>
+        <th>Average</th>
+      </tr>
+      <% series.forEach((s) => { %>
+      <tr>
+        <td>
+          <%= s.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric'
+          }) %>
+        </td>
+        <td><%= s.league %></td>
+        <td><%= s.game1 %></td>
+        <td><%= s.game2 %></td>
+        <td><%= s.game3 %></td>
+        <td><%= s.total %></td>
+        <td><%= Math.floor(s.average) %></td>
+      </tr>
+      <% }) %>
+    </table>
   </body>
 </html>

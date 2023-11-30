@@ -10,7 +10,7 @@ body {
   height: 50px;
 }
 
-.header {
+header {
   background-color: #333;
   padding: 10px;
   color: white;
@@ -19,8 +19,21 @@ body {
   align-items: center;
 }
 
-.header h1 {
-  margin: 0;
+header h1 {
+  margin-left: 20px;
+}
+
+header nav {
+  margin-right: 20px;
+}
+
+header nav a.button {
+  color: white;
+  background-color: gray;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-left: 10px;
 }
 
 .container {
@@ -47,10 +60,14 @@ label {
   margin-bottom: 5px;
 }
 
-input {
+input,
+select {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 15px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   box-sizing: border-box;
 }
 

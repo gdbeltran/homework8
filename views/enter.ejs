@@ -16,8 +16,8 @@
             <select id="league_name" name="league_name" required>
               <!-- Populate options dynamically based on user's registered leagues -->
               <% for (let i = 0; i < user.leagues.length; i++) { %>
-              <option value="<%= user.leagues[i].name %>">
-                <%= user.leagues[i].name %>
+              <option value="<%= user.leagues[i] %>">
+                <%= user.leagues[i] %>
               </option>
               <% } %>
             </select>
