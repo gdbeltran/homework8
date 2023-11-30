@@ -1,13 +1,8 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: "open_sansregular", sans-serif;
+  font-size: 14px;
   background-color: #f4f4f4;
-}
-
-.buttons-container button {
-  /* Set the size of the buttons */
-  width: 100px;
-  height: 50px;
 }
 
 header {
@@ -27,19 +22,6 @@ header nav {
   margin-right: 20px;
 }
 
-header nav a.button {
-  color: white;
-  background-color: gray;
-  padding: 10px 20px;
-  text-decoration: none;
-  border-radius: 5px;
-  margin-left: 10px;
-}
-
-.container {
-  margin: 20px;
-}
-
 .form-container {
   width: 60%;
   margin: auto;
@@ -49,10 +31,12 @@ header nav a.button {
 }
 
 form {
-  margin-top: 20px;
+  width: 35%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding-top: 10px;
 }
 
 label {
@@ -71,31 +55,51 @@ select {
   box-sizing: border-box;
 }
 
-.enter button,
-.series button,
-button {
-  background-color: #4caf50;
+button,
+a.button {
+  background-color: #174cd6;
   color: white;
   padding: 10px 15px;
   border: none;
-  border-radius: 10px;
+  border-radius: 15px;
+  font-weight: bold;
   cursor: pointer;
+  min-width: 90px;
+  min-height: 40px;
+  text-decoration: none !important;
+  text-transform: uppercase;
 }
 
-.enter button {
-  margin-left: 10px;
+a.button {
+  font-size: 16px;
 }
 
-button.logout {
-  background-color: #d9534f;
+button.login,
+button.settings,
+button.register,
+a.button.login,
+a.button.settings,
+a.button.register,
+.login,
+.settings,
+.register {
+  background-color: #4cd617;
+}
+
+button.logout,
+a.button.logout,
+.logout {
+  background-color: #d6174c;
+}
+
+button.view,
+a.button.view,
+.view {
+  background-color: #d6a117;
 }
 
 button[type="submit"] {
   align-self: flex-end;
-}
-
-.series {
-  margin-top: 20px;
 }
 
 .buttons-container {
@@ -109,23 +113,79 @@ button[type="submit"] {
   justify-content: space-between;
 }
 
-form {
-  padding-top: 10px;
+table {
+  width: 60%;
+  table-layout: fixed;
+  margin: 0 auto;
 }
 
-.additional-leagues {
-  display: block;
-  width: 40%;
-  margin-top: 0 auto;
-  justify-content: space-between;
+th,
+td {
+  width: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 5px 10px;
 }
 
-.add-league-button {
-  background-color: #0000ff;
-  color: white;
+.datagrid table {
+  border-collapse: collapse;
+  text-align: left;
+  width: 100%;
+}
+.datagrid {
+  font: normal 12px/150% Arial, Helvetica, sans-serif;
+  background: #fff;
+  overflow: hidden;
+  border: 1px solid #006699;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.datagrid table td,
+.datagrid table th {
+  padding: 3px 10px;
+}
+.datagrid table thead th {
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.05, #174cd6),
+    color-stop(1, #174cd6)
+  );
+  background: -moz-linear-gradient(center top, #174cd6 5%, #174cd6 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#174CD6', endColorstr='#174CD6');
+  background-color: #174cd6;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: bold;
+  border-left: 1px solid #174cd6;
+}
+.datagrid table thead th:first-child {
+  border: none;
+}
+.datagrid table tbody td {
+  color: #174cd6;
+  border-left: 1px solid #174cd6;
+  font-size: 12px;
+  font-weight: normal;
+}
+.datagrid table tbody .alt td {
+  background: #ffffff;
+  color: #174cd6;
+}
+.datagrid table tbody td:first-child {
+  border-left: none;
+}
+.datagrid table tbody tr:last-child td {
+  border-bottom: none;
 }
 
-.remove-button {
-  background-color: #ff0000;
-  color: white;
+@font-face {
+  font-family: "open_sansregular";
+  src: url("opensans-webfont.woff2") format("woff2"),
+    url("opensans-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
 }

@@ -20,15 +20,19 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 db.once("open", () => console.log("Connected to MongoDB"));
 
-const bowlingSeriesSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
-  game1: { type: Number, required: true },
-  game2: { type: Number, required: true },
-  game3: { type: Number, required: true },
-  total: { type: Number, required: true },
-  average: { type: Number, required: true },
-  date: { type: Date, default: Date.now() },
-});
+const BowlingSeriesSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    league_name: { type: String, required: true },
+    date: { type: Date, required: true },
+    game1: { type: Number, required: true },
+    game2: { type: Number, required: true },
+    game3: { type: Number, required: true },
+    total: { type: Number, required: true },
+    average: { type: Number, required: true },
+  },
+  { collection: "Series" }
+);
 
 const userSchema = new mongoose.Schema(
   {
@@ -45,7 +49,7 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   return candidatePassword === this.password;
 };
 
-const BowlingSeries = mongoose.model("Series", bowlingSeriesSchema);
+const BowlingSeries = mongoose.model("Series", BowlingSeriesSchema);
 const User = mongoose.model("User", userSchema);
 
 passport.use(
@@ -139,11 +143,11 @@ app.post("/settings", isAuthenticated, async (req, res) => {
 });
 
 app.post("/add", isAuthenticated, async (req, res) => {
-  const { game1, game2, game3 } = req.body;
+  const { game1, game2, game3, league_name, date } = req.body;
 
   try {
-    if (!game1 || !game2 || !game3) {
-      throw new Error("All game scores are required.");
+    if (!game1 || !game2 || !game3 || !league_name || !date) {
+      throw new Error("All fields are required.");
     }
 
     const total = parseInt(game1) + parseInt(game2) + parseInt(game3);
@@ -153,6 +157,8 @@ app.post("/add", isAuthenticated, async (req, res) => {
 
     const newGame = new BowlingSeries({
       user: req.user._id,
+      league_name,
+      date: formattedDate,
       game1,
       game2,
       game3,
@@ -161,27 +167,27 @@ app.post("/add", isAuthenticated, async (req, res) => {
     });
     await newGame.save();
 
-    // Redirect to the "series.ejs" page after saving the game scores
-    res.redirect("/series");
+    // Redirect to the "view.ejs" page after saving the game scores
+    res.redirect("/view");
   } catch (error) {
     console.error("Error adding game:", error.message);
     res.status(400).send("Bad Request");
   }
 });
 
-app.get("/series", isAuthenticated, async (req, res) => {
+app.get("/view", isAuthenticated, async (req, res) => {
   try {
-    // Fetch all games tied to the user
-    const games = await BowlingSeries.find({ user: req.user._id }).sort({
+    // Fetch all series tied to the user
+    const series = await BowlingSeries.find({ user: req.user._id }).sort({
       date: "desc",
     });
 
     // Calculate totals and averages
-    const totalScores = games.reduce((sum, game) => sum + game.total, 0);
-    const averageScore = totalScores / games.length;
+    const totalScores = series.reduce((sum, series) => sum + series.total, 0);
+    const averageScore = totalScores / (series.length * 3);
 
-    // Render the "series.ejs" page and pass the data to it
-    res.render("series", { games, totalScores, averageScore });
+    // Render the "view.ejs" page and pass the data to it
+    res.render("view", { series, totalScores, averageScore });
   } catch (error) {
     console.error("Error fetching game series data:", error.message);
     res.status(500).send("Internal Server Error");
@@ -207,12 +213,8 @@ app.post(
 );
 
 app.post("/logout", (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      return res.status(500).send("Error logging out");
-    }
-    res.redirect("/login");
-  });
+  req.logout();
+  res.redirect("/login");
 });
 
 app.get("/register", (req, res) => {
