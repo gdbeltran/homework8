@@ -8,35 +8,112 @@
   </head>
   <body>
     <%- include('partials/header', { title: 'View Scores', page: 'series' }) %>
-    <table>
+    <table class="table-data">
       <tr>
-        <th>Date</th>
-        <th>League</th>
-        <th>Game 1</th>
-        <th>Game 2</th>
-        <th>Game 3</th>
-        <th>Total</th>
-        <th>Average</th>
+        <th><button id="Date" class="table-header">Date</button></th>
+        <th><button id="League" class="table-header">League</button></th>
+        <th><button id="Game1" class="table-header">Game 1</button></th>
+        <th><button id="Game2" class="table-header">Game 2</button></th>
+        <th><button id="Game3" class="table-header">Game 3</button></th>
+        <th><button id="Total" class="table-header">Total</button></th>
+        <th><button id="Average" class="table-header">Average</button></th>
       </tr>
-      <% series.forEach((s) => { %>
+      <tbody id="table-content">
+        <% series.forEach((s) => { %>
+        <tr>
+          <td>
+            <%= s.date.toLocaleDateString('en-US', { month: 'long', day:
+            'numeric' }) %>
+          </td>
+          <td><%= s.league_name %></td>
+          <td><%= s.game1 %></td>
+          <td><%= s.game2 %></td>
+          <td><%= s.game3 %></td>
+          <td><%= s.total %></td>
+          <td><%= Math.floor(s.average) %></td>
+        </tr>
+        <% }) %>
+      </tbody>
       <tr>
-        <td>
-          <%= s.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric'
-          }) %>
-        </td>
-        <td><%= s.league %></td>
-        <td><%= s.game1 %></td>
-        <td><%= s.game2 %></td>
-        <td><%= s.game3 %></td>
-        <td><%= s.total %></td>
-        <td><%= Math.floor(s.average) %></td>
-      </tr>
-      <% }) %>
-      <tr>
-        <td colspan="5">Total</td>
-        <td>Total Pins: <%= totalScores %></td>
-        <td>Overall average: <%= Math.floor(averageScore) %></td>
+        <td colspan="5" class="overall">Overall:</td>
+        <td><%= totalScores %></td>
+        <td><%= Math.floor(averageScore) %></td>
       </tr>
     </table>
   </body>
+
+  <script>
+    const tableContent = document.getElementById("table-content");
+    const tableButtons = document.querySelectorAll("th button");
+
+    const createRow = (obj) => {
+      const row = document.createElement("tr");
+      const objKeys = Object.keys(obj);
+      objKeys.map((key) => {
+        const cell = document.createElement("td");
+        cell.setAttribute("data-attr", key);
+        cell.innerHTML = obj[key];
+        row.appendChild(cell);
+      });
+      return row;
+    };
+
+    const getTableContent = (data) => {
+      data.map((obj) => {
+        const row = createRow(obj);
+        tableContent.appendChild(row);
+      });
+    };
+
+    const sortData = (data, param, direction = "asc") => {
+      tableContent.innerHTML = "";
+      const sortedData =
+        direction == "asc"
+          ? [...data].sort(function (a, b) {
+              if (a[param] < b[param]) {
+                return -1;
+              }
+              if (a[param] > b[param]) {
+                return 1;
+              }
+              return 0;
+            })
+          : [...data].sort(function (a, b) {
+              if (b[param] < a[param]) {
+                return -1;
+              }
+              if (b[param] > a[param]) {
+                return 1;
+              }
+              return 0;
+            });
+
+      getTableContent(sortedData);
+    };
+
+    const resetButtons = (event) => {
+      [...tableButtons].map((button) => {
+        if (button !== event.target) {
+          button.removeAttribute("data-dir");
+        }
+      });
+    };
+
+    window.addEventListener("load", () => {
+      getTableContent(response.pokedata);
+
+      [...tableButtons].map((button) => {
+        button.addEventListener("click", (e) => {
+          resetButtons(e);
+          if (e.target.getAttribute("data-dir") == "desc") {
+            sortData(response.pokedata, e.target.id, "desc");
+            e.target.setAttribute("data-dir", "asc");
+          } else {
+            sortData(response.pokedata, e.target.id, "asc");
+            e.target.setAttribute("data-dir", "desc");
+          }
+        });
+      });
+    });
+  </script>
 </html>
