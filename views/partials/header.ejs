@@ -5,17 +5,19 @@
     <a href="/login" class="button login">Login</a>
     <% } else if (page === 'index') { %>
     <a href="/settings" class="button settings">Settings</a>
-    <a href="/logout" class="button logout">Logout</a>
+    <a href="/login" class="button logout">Logout</a>
     <% } else if (page === 'enter') { %>
     <a href="/view" class="button view">View Scores</a>
-    <a href="/logout" class="button logout">Logout</a>
+    <a href="/settings" class="button settings">Settings</a>
+    <a href="/login" class="button logout">Logout</a>
     <% } else if (page === 'series') { %>
     <a href="/enter" class="button enter">Enter Scores</a>
-    <a href="/logout" class="button logout">Logout</a>
+    <a href="/settings" class="button settings">Settings</a>
+    <a href="/login" class="button logout">Logout</a>
     <% } else if (page === 'settings') { %>
     <a href="/enter" class="button enter">Enter Scores</a>
     <a href="/view" class="button view">View Scores</a>
-    <a href="/logout" class="button logout">Logout</a>
+    <a href="/login" class="button logout">Logout</a>
     <% } else if (page === 'login') { %>
     <a href="/register" class="button register">Register</a>
     <% } %>

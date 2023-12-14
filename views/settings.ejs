@@ -8,37 +8,161 @@
   </head>
   <body>
     <%- include('partials/header', { title: 'Settings', page: 'settings' }) %>
-    <form action="/settings" method="post">
-      <label for="first_name">First Name:</label>
-      <input
-        type="text"
-        id="first_name"
-        name="first_name"
-        value="<%= user.first_name %>"
-        required
-      />
+    <div class="form-container">
+      <form action="/settings" method="post" id="settingsForm">
+        <label for="first_name">First Name:</label>
+        <input
+          type="text"
+          id="first_name"
+          name="first_name"
+          value="<%= user.first_name %>"
+          required
+        />
+        <br />
+        <label for="last_name">Last Name:</label>
+        <input
+          type="text"
+          id="last_name"
+          name="last_name"
+          value="<%= user.last_name %>"
+          required
+        />
+        <br />
+        <% user.leagues.forEach((league, index) => { %>
+        <div class="league-container">
+          <label for="league_<%= index %>">League Name:</label>
+          <input
+            type="text"
+            id="league_<%= index %>"
+            name="league_names"
+            value="<%= league %>"
+            required
+          />
+          <% if (user.leagues.length > 1) { %>
+          <button
+            type="button"
+            class="remove-league"
+            onclick="removeLeague(this)"
+          >
+            Remove
+          </button>
+          <% } %>
+        </div>
+        <br />
+        <% }) %>
 
-      <label for="last_name">Last Name:</label>
-      <input
-        type="text"
-        id="last_name"
-        name="last_name"
-        value="<%= user.last_name %>"
-        required
-      />
+        <div class="button-container">
+          <button type="button" onclick="addLeague()">Add League</button>
+          <button type="submit" class="settings">Save Changes</button>
+        </div>
+      </form>
+    </div>
 
-      <% user.leagues.forEach((league, index) => { %>
-      <label for="league_<%= index %>">League Name:</label>
-      <input
-        type="text"
-        id="league_<%= index %>"
-        name="league_names"
-        value="<%= league %>"
-        required
-      />
-      <% }) %>
+    <script>
+      async function removeLeague(button) {
+        const container = button.closest(".league-container");
+        const totalLeagues =
+          document.querySelectorAll(".league-container").length;
 
-      <button type="submit" class="settings">Save Changes</button>
-    </form>
+        if (totalLeagues > 1) {
+          container.parentNode.removeChild(container);
+
+          // Get the index of the league being removed
+          const index = Array.from(container.parentNode.children).indexOf(
+            container
+          );
+
+          try {
+            // Make an asynchronous call to update the database
+            const response = await fetch("/settings", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                first_name,
+                last_name,
+                league_names: cleanedLeagues,
+              }),
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to update the database.");
+            }
+
+            // Update the visibility of remove buttons
+            updateRemoveButtonsVisibility();
+          } catch (error) {
+            console.error("Error updating the database:", error.message);
+          }
+        }
+      }
+
+      function addLeague() {
+        const totalLeagues =
+          document.querySelectorAll(".league-container").length;
+
+        if (totalLeagues < 5) {
+          const settingsForm = document.getElementById("settingsForm");
+
+          const newContainer = document.createElement("div");
+          newContainer.className = "league-container";
+
+          const newLabel = document.createElement("label");
+          newLabel.textContent = "League Name:";
+
+          const newInput = document.createElement("input");
+          newInput.type = "text";
+          newInput.name = "league_names";
+          newInput.required = true;
+
+          const newButton = document.createElement("button");
+          newButton.type = "button";
+          newButton.className = "remove-league";
+          newButton.textContent = "Remove";
+          newButton.addEventListener("click", () => removeLeague(newButton));
+
+          newContainer.appendChild(newLabel);
+          newContainer.appendChild(newInput);
+          newContainer.appendChild(newButton);
+
+          settingsForm.insertBefore(
+            newContainer,
+            settingsForm.lastElementChild
+          );
+
+          // Update the visibility of remove buttons
+          updateRemoveButtonsVisibility();
+        } else {
+          alert("You cannot add more than 5 leagues.");
+        }
+      }
+
+      function updateRemoveButtonsVisibility() {
+        const settingsForm = document.getElementById("settingsForm");
+        const leagueContainers =
+          settingsForm.querySelectorAll(".league-container");
+
+        leagueContainers.forEach((container) => {
+          const removeButton = container.querySelector(".remove-league");
+          if (!removeButton) {
+            const newButton = document.createElement("button");
+            newButton.type = "button";
+            newButton.className = "remove-league";
+            newButton.textContent = "Remove";
+            newButton.addEventListener("click", () => removeLeague(newButton));
+            container.appendChild(newButton);
+          }
+        });
+
+        const totalLeagues = leagueContainers.length;
+
+        // Disable or enable based on the total number of leagues
+        leagueContainers.forEach((container) => {
+          const removeButton = container.querySelector(".remove-league");
+          removeButton.disabled = totalLeagues === 1;
+        });
+      }
+    </script>
   </body>
 </html>

@@ -102,6 +102,7 @@ app.use(
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.locals.messages = req.flash();
@@ -110,6 +111,16 @@ app.use((req, res, next) => {
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+
+app.post("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.error("Error during logout:", err);
+      return res.status(500).send("Internal Server Error");
+    }
+    res.redirect("/login");
+  });
+});
 
 app.get("/", isAuthenticated, async (req, res) => {
   try {
@@ -128,18 +139,50 @@ app.get("/settings", isAuthenticated, (req, res) => {
 });
 
 app.post("/settings", isAuthenticated, async (req, res) => {
-  const { first_name, last_name, league_names } = req.body;
+  try {
+    const { first_name, last_name, league_names } = req.body;
 
-  // Validate the input...
+    // Validate the input...
+    if (!first_name || !last_name) {
+      throw new Error("First name and last name are required.");
+    }
 
-  req.user.first_name = first_name;
-  req.user.last_name = last_name;
-  req.user.leagues = Array.isArray(league_names)
-    ? league_names
-    : [league_names];
-  await req.user.save();
+    // If league_names is not an array, convert it to an array
+    const cleanedLeagues = Array.isArray(league_names)
+      ? league_names.filter((league) => league.trim() !== "")
+      : [league_names.trim()]; // Convert to array if it's a single value
 
-  res.redirect("/settings");
+    if (cleanedLeagues.length === 0) {
+      throw new Error("At least one league is required.");
+    }
+
+    req.user.first_name = first_name;
+    req.user.last_name = last_name;
+    req.user.leagues = cleanedLeagues;
+    await req.user.save();
+
+    res.redirect("/settings");
+  } catch (error) {
+    console.error("Error updating user settings:", error.message);
+    req.flash("error", error.message);
+    res.redirect("/settings");
+  }
+});
+
+app.post("/remove-league", isAuthenticated, async (req, res) => {
+  try {
+    const { index } = req.body;
+
+    // Validate the index...
+
+    req.user.leagues.splice(index, 1);
+    await req.user.save();
+
+    res.status(200).send("League removed successfully.");
+  } catch (error) {
+    console.error("Error removing league:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 app.post("/add", isAuthenticated, async (req, res) => {
@@ -212,11 +255,6 @@ app.post(
   })
 );
 
-app.post("/logout", (req, res) => {
-  req.logout();
-  res.redirect("/login");
-});
-
 app.get("/register", (req, res) => {
   res.render("register");
 });
@@ -276,11 +314,6 @@ app.post("/register", async (req, res) => {
     console.error("Error registering user:", error.message);
     res.status(400).send(error.message);
   }
-});
-
-app.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect("/");
 });
 
 function isAuthenticated(req, res, next) {
